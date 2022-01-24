@@ -36,6 +36,9 @@ def read_root():
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await manager.connect(websocket)
-    while True:
-        data = await websocket.receive_text()
-        await manager.broadcast(f"Message text was: {data}")
+    try:
+        while True:
+            data = await websocket.receive_text()
+            await manager.broadcast(f"Message text was: {data}")
+    except:
+        manager.disconnect(websocket)
